@@ -2,6 +2,7 @@
     <h4>
         Summary Figure
     </h4>
+    <img src="infographic.svg" width="500" height="600">
 
     <h4>
         Background
@@ -14,6 +15,49 @@
     <h4>
         Methods
     </h4>
+    <p>
+        The primary datasets we’ll use for training is the Yelp open dataset that contains over 8M user reviews across 200,000 businesses. The dataset contains a collection of JSON files covering information on user data, review data, and business specific information. We’re primarily focusing on the review dataset which comes in the following format (we’ve filtered to focus on the relevant data):
+    </p>
+        <code>
+            { <br>
+                review_id <br>
+                user_id<br>
+                …<br>
+                stars (0-5)<br>
+                text (review raw text)<br>
+            }<br>
+            
+        </code>
+
+
+        <p>
+We’ll run most of our exploratory data analysis on this dataset so we can understand the relationships between different word features and how they impact star rating. Our first step is to determine the best NLP feature extraction technique to encode sentiment and style characteristics from the review. We’ll consider 3 vectorization methods:
+</p>
+<ul>
+<li>
+    Bag of Words- only considers frequencies of words or n-grams
+</li>
+<li>
+    TF-IDF (Term Frequency-Inverse Document Frequency)- vectorizes based on how important a word is in a corpus by using the frequency of certain words amongst all the documents given
+</li>
+<li>
+    Word2Vec- a deep learning technique that attempts to determine a vectorization that encodes associations between words
+</li>
+<li>
+
+    GLoVe - is an unsupervised learning algorithm for obtaining vector representations for words. Training is performed on aggregated global word-word co-occurrence statistics from a corpus, and the resulting representations showcase interesting linear substructures of the word vector space.
+</li>
+<li>
+    BERT- provides an embedding that is vocabulary agnostic (based on word parts)
+    Once we have identified a vectorization method, we’ll train a deep model (LSTM or MLP) to output a rating number between 0 and 5. Once we get promising data from Yelp’s open source dataset, we hope to train our model on more sources like Google Reviews, TripAdvisor, etc.
+    
+</li>
+
+
+</ul>
+
+
+    </p>
     <h4>
         Results
     </h4>
@@ -31,12 +75,20 @@
     <h4>
         References
     </h4>
-    <p>
-        https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9065812
-https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7050801
-https://www.kaggle.com/yelp-dataset/yelp-dataset
-https://www.kaggle.com/damienbeneschi/krakow-ta-restaurans-data-raw
+    <ul>
+        <li>
+            https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9065812
 
-    </p>
+        </li>
+        <li>
+            https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7050801
+        </li>
+        <li>
+            https://www.kaggle.com/yelp-dataset/yelp-dataset
+        </li>
+        <li>
+            https://www.kaggle.com/damienbeneschi/krakow-ta-restaurans-data-raw
+        </li>
+    </ul>
 
 </html>
