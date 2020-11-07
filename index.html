@@ -61,7 +61,7 @@ For our project, we decided to look at the current restaurant rating system- we 
 <br><br>
 <!-- Approach -->
 <h3>Methods</h3>
-Data preparation/pre-processing
+<h4>Data preparation/pre-processing</h4> 
 As mentioned earlier, the first stage in data preparation was to download the Yelp review dataset. This dataset provided a lot of information that was extraneous to our use case. Our next stage was to extract the features that we needed from the JSON dataset. We deemed that the most important features from the dataset that we needed were the “review_id”, “stars”, and “text” from each review. We took this data and placed it into a Pandas dataframe. After we had the Pandas dataframe, we needed to process each review text to remove punctuation and stem each word so that we have clean review text for vectorizing. 
 <br><br>
 <h4>Vectorizing</h4> 
@@ -69,32 +69,55 @@ As mentioned earlier, the first stage in data preparation was to download the Ye
 The purpose behind using Tf-idf as a method for vectorizing text is that it is a statistical approach based on term weighting. We have a large number of reviews and we wanted to determine the important words that carry weight based on star-rating. This method allows us to ignore the words that carry less importance (stopwords). 
 <br><br>
 This algorithm is efficient in matching words in a query to documents that are relevant to the query. Tf-idf has a historical precedent of returning documents that are highly relevant to a particular query. You can also compute the similarity between two arguments with it. The disadvantage of this approach is that since it is based on the bag-of-words model, it may not capture the position in text, semantics, or co-occurrences. It is only useful as a lexical level feature.
-Word2Vec Vectorizer<br><br>
-We wanted to try using a neural network based vectorizer. With Word2Vec we had an option to create neural word embeddings with either skip-grams or continuous bag of words. We were drawn to this approach because it forms vectors based on context which could be key to determining sentiment within the thousands of reviews that we have. 
+
+<h5>K-Means Clustering </h5>
+Utilizing the Tf-idf vectorization, we ran the K-means clustering algorithm multiple times in order to extract the data on JSON objects of reviews from the Yelp dataset. For the unsupervised learning aspect of our project we decided to move forward only with Tf-idf vectorization as it allowed for easier manipulation of the dataset and provide a more accurate analysis. By running K-means on different altered datasets, our goal is to see how to best cluster the data and from there gain a deeper understanding of the dataset. We ran the K-means clustering algorithm on data with several different feature lengths to optimize the groupings of related reviews. 
+ <br><br>
+After running the vectorization methods on the reviews of the Yelp dataset, we needed to find the optimal number of clusters in which each dataset may be clustered. Utilizing the elbow method, we were able to plot the distortion as a function of the number of clusters in range of K. For K-means clustering using Tf-idf vectorization, we were able to determine that 3 is the optimal number of clusters. <br><br>
+<div style="text-align: center;">
+  <img style="height: 300px;" alt="" src="elbow.png">
+  </div>
+  Following this, we were then able to run the K-means clustering algorithm with 3 clus on the Tf-idf vectorized dataset. As you can see in the table below, for each cluster the most common words and its respective average star rating out of 5 is displayed. Clusters that included more positive language, then had an according high average star rating and vice versa. Looking at the cluster with the highest average star rating, #1, the most common words consisted of “great”, “excel”, “recommend”, etc. 
+  <br><br>
+   <div style="text-align: center;">
+    <img style="height: 300px;" alt="" src="cluster-chart.png">
+    </div>
+    <br><br>
+    After analyzing the average star rating of each of the different clusters, we observed that all the star ratings were above 3 stars. From there, we decided to look at the star frequency from all reviews of the dataset. As shown in the bar graph below, we were able to observe that the majority of the review star ratings are in the range from 3.5 to 5.0. Thus, this better explains the distribution of the average star ratings of the clusters. 
+    <br><br>
+    <div style="text-align: center;">
+      <img style="height: 300px;" alt="" src="cluster-bar.png">
+      </div>
+      Another aspect that we were able to modify to determine the optimal clustering via K-means would be modifying the number of features we would be vectorizing. With the max_features parameter in the Tf-idf object, we select how many words we want to place importance for; meaning, for each review, the words that place the most weight in terms of star rating come out in the features. Since the feature lengths are too long, we decided to use PCA dimensionality reduction in order to decrease the number of features to better visualize the clusters. Then, we ran the clustering algorithm on the different number of features where N=20, N=200 and N=1000. It is noticeable that in the graph where N=1000 the resulting clusters are not quite distinct in contrast with when N=20. This shows that with less number of features it is much easier to group the vectorized reviews and provide more classified data.  
+      <div style="text-align: center;">
+        <img style="height: 300px;" alt="" src="pca-graph.png">
+        </div>
+
+        Overall, our clustering results indicated to us that Tf-idf may not be the best vectorization in separating review types. That being said, we did see some success in that it clustered words associated with high star reviews together (love, great, etc.) and clustered words that could be associated with low star reviews together (didn’t, need, etc.). In the future, we hope to explore more vectorization methods that can create more distinct clusters.
+
+<h4>Sentiment Analysis </h4>
+The next approach we looked at was sentiment analysis, so we can understand the difference in sentiments across different star reviews. We first processed all of the data by the review id, stars, and text. Then, for each star rating we filtered our data frame to calculate the average sentiment for reviews per star rating. We were then able to visualize the average sentiment per each clustered star rating. By using the TextBlob library, which uses a sentiment analysis function that determines the attitude of the writer, the function returns a number from -1 to 1. The function essentially ignores one letter words and words it doesn’t know anything about, to find a sentiment value from -1 to 1 in how much sentiment it shows. This will return an average of each of the words in the cluster and is what can be seen in the graph. As expected we can see that the sentiment value increases as the star rating increases, signaling that the sentiment shown in the higher star clusters is greater than the sentiment shown in the lower star clusters. 
+
+<div style="text-align: center;">
+  <img style="height: 300px;" alt="" src="average-bar.png">
+  </div>
+  <br><br>
+  <h3>Next Steps</h3>
+  Thinking about how to make our algorithm more efficient, we began thinking about different vectorization techniques. Both Word2Vec and GloVe are much more accurate than Tf-idf in terms of extracting sentiment from reviews, so in thinking about the future it would be better to implement our algorithm with one of these alternatives.
+  <br><br>
+<!-- Results -->
 <br><br>
+<h5>Word2Vec Vectorizer</h5><br><br>
+We want to try using a neural network based vectorizer. With Word2Vec we have an option to create neural word embeddings with either skip-grams or continuous bag of words. We were drawn to this approach because it forms vectors based on context which could be key to determining sentiment within the thousands of reviews that we have. <br><br>
 The approach is very intuitive, transforming the unlabeled raw corpus into labeled data, and learning the representation of words in a classification task. The process requires little memory, and needs little preprocessing as the data can be fed in a simple way. The simple mapping between the target word to its context word implicitly embeds the sub-linear relationship into the vector space of words. Some disadvantages of this approach is that the sub-linear relationships are not explicitly defined, which means there’s little theoretical support behind the characteristic. Also the model may be difficult to train if the softmax function is used since the size of the vocabulary would be too large. Through approximation algorithms are used to address this issue, other problems can still happen like word vectors not being distributed uniformly, and the vector space not being sufficiently utilized. 
 <br><br>
 <h5>GloVe Vectorizer</h5>
-Our group was drawn to GloVe because it trains on co-occurrence counts of words and uses statistics to produce a meaningful word vector space. With this method, we can capture the meaning of one word embedding with the structure of the entire corpus.
+Our group is drawn to GloVe because it trains on co-occurrence counts of words and uses statistics to produce a meaningful word vector space. With this method, we can capture the meaning of one word embedding with the structure of the entire corpus.
 <br><br>
-The advantages of this algorithm is that it’s goal is very straightforward. It is just trying to enforce the word vectors to capture sub-linear relationships in the vector space.  This approach also adds some more practical meaning into word vectors by considering the relationship between word pairs rather than between words. This algorithm also gives lower weight to highly frequent word pairs to ensure that meaningless stop words don’t dominate the training period. However, a disadvantage to this algorithm is that the model is trained on the co-occurrence matrix words, which takes a lot of memory for storage. If you change any of the parameters related to the matrix, you would have to reconstruct the matrix again in a very time consuming process.<br><br>
+The advantages of this algorithm is that it’s goal is very straightforward. It is just trying to enforce the word vectors to capture sub-linear relationships in the vector space.  This approach also adds some more practical meaning into word vectors by considering the relationship between word pairs rather than between words. This algorithm also gives lower weight to highly frequent word pairs to ensure that meaningless stop words don’t dominate the training period. However, a disadvantage to this algorithm is that the model is trained on the co-occurrence matrix words, which takes a lot of memory for storage. If you change any of the parameters related to the matrix, you would have to reconstruct the matrix again in a very time consuming process.
 
-<h5>K-Means Clustering </h5>
-Utilizing the different vectorizations, we ran the K-means clustering algorithm multiple times in order to extract the data on JSON objects of reviews from the Yelp dataset. After analysis of the three vectorization methods, we predicted that the GloVe method would be more efficient than the Word2vec, and was far more intuitive than Tf-idf. Therefore, we chose to move forward with running the K-means clustering only on the GloVe and Tf-idf vectorizations. By running K-means on both methods, our goal was to determine which method would develop more distinct clusters. Thus, we would be able to provide more accurate information on the individual cluster’s average star ratings for application in future supervised learning techniques such as sentiment analysis. <br><br>
-After running both vectorization methods on the reviews of the Yelp dataset, we needed to find the optimal number of clusters in which each dataset may be clustered. Utilizing the elbow method, we were able to plot the explained variance as a function of the number of clusters in range of K. For K-means clustering using Tf-idf vectorization, we were able to determine the __ is the optimal number of clusters. In addition to that, in regards to GloVe vectorization we found the optimal number of clusters to be __.<br><br>
-Following this, we were then able to run the K-means clustering algorithm on the Tf-idf vectorized dataset. As you can see in the table below, for each cluster the most common words and its respective average star rating out of 5 is displayed. Clusters that included more positive language, then had an according high average star rating and vice versa. Looking at the cluster with the highest average star rating, #1, the most common words consisted of “great”, “excel”, “recommend”, etc. However, in the graph below it is evident that the resulting clusters are not quite distinct. Thus, it is possible that this vectorization method might not be producing as accurate results as hoped.  <br><br>
-Next, we ran the K-means clustering algorithm on the dataset produced from the GloVe vectorization. In order to retrieve the vectorized dataset on the Yelp reviews, we utilized a GloVe model that was previously trained on the Twitter dataset. From here, after running K-means clustering on this dataset we were able to produce the results shown below. The same trend in regards to the relationship between the most common words and average star rating exists. That being said, the difference in comparison to Tf-idf vectorization clustering is apparent. <br><br>
-So following the Glove algorithm, we analyzed the clusters in order to deduce each average star rating, which resulted in the slice of data that we needed for our model. 
-
-
-
-
-<br><br>
-<!-- Results -->
-<h3>Experiments and results</h3>
-In order for our team to consider our project successful there are a couple objectives that we are trying to achieve. The first of which is to develop a model that given any single yelp review is able to accurately predict the rating of it. We can test this because we have the data for each review in the form of a JSON object and we can simply cross-reference our model’s prediction with the rating given in the data. The second objective that our team will be trying to complete would be to achieve high accuracy in terms of sentiment analysis on tweets regarding rating of a restaurant. These are the results that we are trying to achieve.
-
-<br><br>
+<h5>Results</h5>
+After analysis of the K-means clustering results from the other vectorization techniques, we have determined that the GloVe vectorization would prove much more useful in the future. Based on the researched advantages as well as the more accurate cluster grouping & according average star rating, it has been concluded that GloVe vectorization is the preferred option.
 
 <!-- Main Results Figure --> 
 <!-- <div style="text-align: center;">
@@ -107,9 +130,14 @@ In order for our team to consider our project successful there are a couple obje
 In thinking about the outcome of our project, the best outcome would be to have an accurate model that can predict the rating of any review that we pass into it. And thinking about next steps, our goal is to expand the model into application that gives an accurate rating for restaurants and even specific food items. This true rating system would be far more accurate because, rather than relying on outdated reviews, you can actually have a rating system that is decided based on far more recent information, like twitter posts. This rating system solves the massive problem of having lack of information when looking at restaurants, as well as the common disparity between the opinions stated on the internet, and the current thoughts of people towards these restaurants. And expanding on this idea even more, we could see this idea being implemented within any entertainment and recreational buildings, basically anything that has a review system already in place.
 
 <br><br>
+<h3>Conclusion</h3>
+For the midterm update, the approach with Tf-idf worked best. We found that we were able to determine the clusters and the relationships accurately enough. In the future we will now use the GloVe option that we did research into, but for now thought it best to leave the Tf-idf approach.
+<br><br>
 
-<h3>Next Steps</h3>
 In order for our team to consider our project successful there are a couple objectives that we are trying to achieve. The first of which is to develop a model that given any single yelp review is able to accurately predict the rating of it. We can test this because we have the data for each review in the form of a JSON object and we can simply cross-reference our model’s prediction with the rating given in the data. The second objective that our team will be trying to complete would be to achieve high accuracy in terms of sentiment analysis on tweets regarding rating of a restaurant. After using K-means clustering on the different vectorization techniques, we have been able to determine the advantages of GloVe vectorization. This decided vectorization technique can be utilized during the supervised learning portion of the project, mainly for sentiment analysis. These are the results that we are trying to achieve. The information deduced from the unsupervised learning techniques executed aid us in reaching our final objective. 
+
+
+
 <!-- Results -->
 <h3>References</h3>
 <ul>
