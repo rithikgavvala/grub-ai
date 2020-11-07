@@ -116,8 +116,7 @@ Our group is drawn to GloVe because it trains on co-occurrence counts of words a
 <br><br>
 The advantages of this algorithm is that it’s goal is very straightforward. It is just trying to enforce the word vectors to capture sub-linear relationships in the vector space.  This approach also adds some more practical meaning into word vectors by considering the relationship between word pairs rather than between words. This algorithm also gives lower weight to highly frequent word pairs to ensure that meaningless stop words don’t dominate the training period. However, a disadvantage to this algorithm is that the model is trained on the co-occurrence matrix words, which takes a lot of memory for storage. If you change any of the parameters related to the matrix, you would have to reconstruct the matrix again in a very time consuming process.
 
-<h5>Results</h5>
-After analysis of the K-means clustering results from the other vectorization techniques, we have determined that the GloVe vectorization would prove much more useful in the future. Based on the researched advantages as well as the more accurate cluster grouping & according average star rating, it has been concluded that GloVe vectorization is the preferred option.
+
 
 <!-- Main Results Figure --> 
 <!-- <div style="text-align: center;">
@@ -131,10 +130,10 @@ In thinking about the outcome of our project, the best outcome would be to have 
 
 <br><br>
 <h3>Conclusion</h3>
-For the midterm update, the approach with Tf-idf worked best. We found that we were able to determine the clusters and the relationships accurately enough. In the future we will now use the GloVe option that we did research into, but for now thought it best to leave the Tf-idf approach.
+In order for our team to consider our project successful there are a couple objectives that we are trying to achieve. The first of which is to develop a model that given any single yelp review is able to accurately predict the rating of it. We can test this because we have the data for each review in the form of a JSON object and we can simply cross-reference our model’s prediction with the rating given in the data. The second objective that our team will be trying to complete would be to achieve high accuracy in terms of sentiment analysis on tweets regarding rating of a restaurant. 
 <br><br>
 
-In order for our team to consider our project successful there are a couple objectives that we are trying to achieve. The first of which is to develop a model that given any single yelp review is able to accurately predict the rating of it. We can test this because we have the data for each review in the form of a JSON object and we can simply cross-reference our model’s prediction with the rating given in the data. The second objective that our team will be trying to complete would be to achieve high accuracy in terms of sentiment analysis on tweets regarding rating of a restaurant. After using K-means clustering on the different vectorization techniques, we have been able to determine the advantages of GloVe vectorization. This decided vectorization technique can be utilized during the supervised learning portion of the project, mainly for sentiment analysis. These are the results that we are trying to achieve. The information deduced from the unsupervised learning techniques executed aid us in reaching our final objective. 
+For the midterm update, the approach with Tf-idf worked best. We found that we were able to determine the clusters and the relationships accurately enough. However, based on the researched advantages as well as the more accurate cluster grouping & according average star rating, it has been concluded that GloVe vectorization is the preferred option. This decided vectorization technique can be utilized during the supervised learning portion of the project, mainly for sentiment analysis. These are the results that we are trying to achieve. The information deduced from the unsupervised learning techniques executed aid us in reaching our final objective. 
 
 
 
