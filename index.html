@@ -138,7 +138,7 @@ After evaluating different vectorization techniques and model architectures, we 
 <!-- Results -->
 <br><br>
 <h4>Neural Networks</h4><br><br>
-Our process for developing our supervised learning approach is that we utilized a basic Keras model to train our own model on a subset of 500,000 vectorized reviews itself. Essentially what we did is that we had 3 hidden layers that utilized relu activation function, while the final layer used the softmax activation function. Because this was a classification task, we decided to use categorical cross entropy as our loss function. From there when testing, the model is able to take in a vectorized review as an input and then output a respective one-hot encoding of the star rating value. At this point our current accuracy is 64 percent just for the data we used to train the model, and  is 62.14 percent for all of the data that we used to test the model. We also observed that after balancing the dataset our accuracy for the model went down. One drawback of our model is that it does not consider the order of the words when it outputs a score. To highlight the range of our model we have included a few examples. 
+From our literature/domain review, we found that neural networks were very commonly used in the NLP text classification space. This is most likely due to the complexity and high dimensionality of embedding vectors. As a result, we decided to use neural networks as well. Our process for developing our supervised learning approach is we trained a basic sequential feed forward model on a subset of 500,000 vectorized reviews itself. Essentially what we did is that we had 3 hidden layers that utilized relu activation function, while the final layer used the softmax activation function. Because this was a classification task, we decided to use categorical cross entropy as our loss function. From there when testing, the model is able to take in a vectorized review as an input and then output a respective one-hot encoding of the star rating value. At this point our current accuracy is 64 percent just for the data we used to train the model, and is 62.14 percent for all of the data that we used to test the model. As mentioned before, we noticed that the star frequency of the dataset was highly unbalanced. Thus, we ran the model on a balanced dataset by pulling an equal number of reviews from each star category. However, after balancing the dataset our accuracy for the model went down. One drawback of our model is that it does not consider the order of the words when it outputs a score. To highlight the range of our model we have included a few examples. 
 <div style="text-align: center;">
   <img style="height: 300px;" alt="" src="initial-output.png">
   </div>
@@ -160,21 +160,23 @@ The way our approach works is that for every single review you input a 200 dimen
 We also used the architecture above instead with a BERT vectorization in order to see if the accuracy of the model would improve. This method included a feature vector size of 768. We modified our sequential Keras model to take an input as a BERT vector. 
 
 <h3>Results</h3>
-There are the quantative results for our project from the two approaches that we took for the supervised learning portion of our project.
+Our final product for this project was our model that was trained on the yelp data through the methods discussed previously. When you type in a sentence like a tweet, it is able to give you the star rating. In general it has been fairly accurate at predicting what type of rating each person who created the tweet would give. This already starts to give more information than most rating systems. Here we have the real time opinions of people on certain restaurants checked to see what rating they would give. And because people aren’t sitting down and writing a review, the scores are much closer to the actual truth about the rating. Because people who write reviews usually either have a fantastic or terrible opinion on the establishment. With Twitter, it is much more accessible for people to write out their opinions, therefore making the rating given so much more naturally. 
 <h4>GloVe</h4>
 <div style="text-align: center;">
   <img style="height: 300px;" alt="" src="glove-results.png">
   </div>
 <br><br>
-Unfortunately after we balanced our dataset we noticed a decrease in accuracy (as reported in the table above). We're still working on adjusting hyperparameters to increase performance, but our current results are reported above. We generated 4 metrics- precision, recall, f1-score, and accuracy. 
+Unfortunately after we balanced our dataset we noticed a decrease in accuracy (as reported in the table above). We're still working on adjusting hyperparameters to increase performance, but our current results are reported above. We generated 4 metrics- precision, recall, f1-score, and accuracy. In general, we realized we wanted to maximize f1-score because we cared about both precision and recall. We cared about precision because we want confidence in a star prediction and recall because we don't want our model to miss a certain star rating. As expected, we noticed high F1-scores at the ends of the distribution (1-star and 5-star) since those are the easiest ratings to distinguish between.
 
 <h4>BERT</h4>
 <br><br>
 <div style="text-align: center;">
   <img style="height: 300px;" alt="" src="bert-results.png">
   </div>
-For the BERT-based model, we were unable to train our own model entirely so our model was based on a pre-trained model that was trained for semantic text similarity. Our group believes that if we had the time and computing resources to train our own model we could improve the model accuracy significantly. The BERT-based model used its own proprietary vectorization technique which embedded the words. This model yielded 54 percent test accuracy with a high train accuracy.  
+  For the BERT-based model, we were unable to train our own model entirely so our vectorization model was based on a pre-trained model that was trained for semantic text similarity. Our group believes that if we had the time and computing resources to train our own model we could improve the model accuracy significantly. The BERT-based model used its own proprietary vectorization technique which embedded the words. This model yielded 54 percent test accuracy with a high train accuracy. In terms of F1-Score, we noticed similar results as the GLoVE model with a higher score at the extremes. 
 
+  <br><br>
+  Although we realized our accuracy was a bit low, we tried using a top-k-2 score metric and noticed a test accuracy of over 80% in both models. This indicated that our model was very good at getting within 1 star of the answer. Since it's difficult to distinguish between ratings as a human (3 and 4 star reviews can be very similar), this was an expected result.
 
 
 <!-- Main Results Figure --> 
@@ -186,7 +188,6 @@ For the BERT-based model, we were unable to train our own model entirely so our 
 <!-- Results -->
 <h3>Future Work / Conclusion</h3>
 At the moment, we have been able to produce a fully functional model that can take in any statement as input and output an according star rating. Looking beyond, there are many ways that we can improve our platform. One major way is to continue to develop the accuracy of our model. In order to do this, we could expand our sources from where we pull reviews to make up our training dataset (ex. Google reviews). Other possibilities include looking into further supervised learning recurrent models such as LSTM for greater capture of the temporal context of words in a review. Moreover, if we want to grow our platform even greater, we project that this rating system could have an effect on industries far more than just restaurants. It could affect other brands and customer driven businesses, as well as even people. As long as we have the writing resources to derive the information and words to run through our model and test the meaning of it, we can continue to grow grub.ai into the best option for ratings.
-
 <br><br>
 <!-- Results -->
 <h3>References</h3>
